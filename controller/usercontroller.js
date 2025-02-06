@@ -84,9 +84,9 @@ exports.login = async(req,res) => {
         }
     }else
     {
-        localStorage.setItem('data','email');
-        var name = localStorage.getItem('data');
-        console.log(name);
+        // localStorage.setItem('data','email');
+        // var name = localStorage.getItem('data');
+        // console.log(name);
         res.status(200).json({
              status : "you are already login"
         });
