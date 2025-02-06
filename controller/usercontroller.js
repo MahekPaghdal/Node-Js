@@ -1,4 +1,7 @@
+const { LocalStorage } = require('node-localstorage');
 var user = require('../model/usermodel');
+// var localStorage = require('node-localstorage');
+var login_status = 0;
 exports.insert = async(req,res) => {
     user.create(req.body);
     res.status(200).json({
@@ -28,7 +31,7 @@ exports.getdata = async(req,res) => {
         data,
         page_no,
         total_page,
-        total_record
+        total_record    
     });
    
 }
@@ -56,3 +59,37 @@ exports.delete_data = async(req,res) =>{
         data
     });
 };
+exports.login = async(req,res) => {
+    var data = await user.find({"email" : req.body.email});
+    if(login_status == 0)
+    {
+        if(data.length==1)
+        {
+            if(data[0].password=req.body.password)
+            {
+                login_status =1;
+                res.status(200).json({
+                status : "login success"
+            });
+            }else{
+                res.status(200).json({
+                    status : "check your email and password.."
+                });  
+            }
+        }else
+        {
+            res.status(200).json({
+                status : "check your email and password.."
+            });
+        }
+    }else
+    {
+        localStorage.setItem('data','email');
+        var name = localStorage.getItem('data');
+        console.log(name);
+        res.status(200).json({
+             status : "you are already login"
+        });
+    }
+}    
+
